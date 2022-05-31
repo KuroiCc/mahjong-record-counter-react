@@ -1,24 +1,31 @@
 import React from 'react'
+import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
+
+// local imports
 import logo from './logo.svg'
 import styles from './App.module.css'
 
 function App() {
+  const templateHome = (
+    <header className={styles['App-header']}>
+      <img src={logo} className={styles['App-logo']} alt="logo" />
+      <p>
+        Here is the home page <br />
+        Click following link to other page
+      </p>
+      <Link className={styles['App-link']} to="">
+        coming soon
+      </Link>
+    </header>
+  )
   return (
     <div className={styles.App}>
-      <header className={styles['App-header']}>
-        <img src={logo} className={styles['App-logo']} alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className={styles['App-link']}
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={templateHome} />
+          <Route path="*" element={<h1>404 NOT FOUND</h1>} />
+        </Routes>
+      </BrowserRouter>
     </div>
   )
 }
