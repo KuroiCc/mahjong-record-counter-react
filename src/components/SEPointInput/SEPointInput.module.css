@@ -1,0 +1,12 @@
+.sep-input-split {
+  background-color: #fff !important;
+}
+
+.sep-input-right {
+  border-left-width: 0;
+}
+
+.sep-input-right:hover,
+.sep-input-right:focus {
+  border-left-width: 1px;
+}
