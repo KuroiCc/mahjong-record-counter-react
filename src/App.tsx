@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
 // local imports
 import logo from './logo.svg'
 import styles from './App.module.css'
+import { TestPage } from './pages'
 
 function App() {
   const templateHome = (
@@ -13,8 +14,8 @@ function App() {
         Here is the home page <br />
         Click following link to other page
       </p>
-      <Link className={styles['App-link']} to="">
-        coming soon
+      <Link className={styles['App-link']} to="/test">
+        Test Page
       </Link>
     </header>
   )
@@ -23,6 +24,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={templateHome} />
+          <Route path="/test" element={<TestPage />} />
           <Route path="*" element={<h1>404 NOT FOUND</h1>} />
         </Routes>
       </BrowserRouter>
