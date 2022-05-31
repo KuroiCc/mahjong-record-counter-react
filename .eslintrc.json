@@ -1,0 +1,43 @@
+{
+    "env": {
+        "browser": true,
+        "es2021": true
+    },
+    "extends": [
+        "eslint:recommended",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:react/recommended",
+        "standard"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true
+        },
+        "ecmaVersion": "latest",
+        "sourceType": "module"
+    },
+    "plugins": [
+        "react",
+        "@typescript-eslint"
+    ],
+    "rules": {
+        // enforce the consistent use of single quotes
+        "quotes": [2, "single"], 
+
+        // enforce the consistent use of disallows semicolons as the end of statements (except to disambiguate statements)
+        "semi": ["error", "never", {"beforeStatementContinuationChars": "never"}],
+        "semi-spacing": ["error", {"after": true, "before": false}],
+        "semi-style": ["error", "first"],
+        "no-extra-semi": "error",
+        "no-unexpected-multiline": "error",
+        "no-unreachable": "error",
+        
+        // disallows a space before function parenthesis
+        "space-before-function-paren": ["error", {
+            "anonymous": "never",
+            "named": "never",
+            "asyncArrow": "always"
+        }]
+    }
+}
