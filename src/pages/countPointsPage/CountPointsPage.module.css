@@ -1,0 +1,10 @@
+.concealed-triplet-table {
+  bordercollapse: 'collapse';
+  margin: 10px auto 0;
+  width: 100%;
+}
+
+.concealed-triplet-table td {
+  border: 1px solid silver;
+  padding: 0.5em;
+}
