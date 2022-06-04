@@ -144,7 +144,7 @@ export const CountPointsPage: React.FC = () => {
         justifyContent: 'center',
         alignItems: 'center',
         height: '100vh',
-        backgroundColor: 'ghostwhite'
+        backgroundColor: '#fdfdfd'
       }}
     >
       <div
@@ -153,7 +153,8 @@ export const CountPointsPage: React.FC = () => {
           backgroundColor: 'white',
           padding: '15px 30px',
           margin: '0 auto',
-          borderRadius: '5px'
+          borderRadius: '30px',
+          boxShadow: '0 0 1px rgba(0,0,0,0.1)'
         }}
       >
         <Typography.Title
