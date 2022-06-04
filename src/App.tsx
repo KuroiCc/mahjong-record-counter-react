@@ -2,7 +2,7 @@ import React from 'react'
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
 
 // local imports
-import logo from './logo.svg'
+import logo from './assets/logo.svg'
 import styles from './App.module.css'
 import { TestPage, CountPointsPage } from './pages'
 
@@ -24,7 +24,7 @@ function App() {
   )
   return (
     <div className={styles.App}>
-      <BrowserRouter>
+      <BrowserRouter basename="/count_points">
         <Routes>
           <Route path="/" element={templateHome} />
           <Route path="/countPoints" element={<CountPointsPage />} />
