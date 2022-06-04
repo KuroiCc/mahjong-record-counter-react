@@ -88,7 +88,7 @@ export const CountPointsPage: React.FC = () => {
     let result: number | string = 'err'
 
     if (states.type[0] === '七对') {
-      result = 25
+      result = '25'
     } else if (states.type[0] === '平胡') {
       if (states.winType[0] === '自摸') {
         result = 20
@@ -282,7 +282,9 @@ export const CountPointsPage: React.FC = () => {
               alignItems: 'baseline'
             }}
           >
-            <Typography.Title>{Math.ceil((result as number) / 10) * 10}符</Typography.Title>
+            <Typography.Title>
+              {typeof result === 'number' ? Math.ceil((result as number) / 10) * 10 : result}符
+            </Typography.Title>
             <span style={{ marginLeft: '5px', fontSize: 'larger' }}>({result})</span>
           </div>
           {/* debug */}
@@ -299,7 +301,7 @@ export const CountPointsPage: React.FC = () => {
     <div>{JSON.stringify(concealedTriplet)}</div> */}
         </div>
         <div>
-          <Image width={500} src={simpleScoreTable} />
+          <Image width={400} src={simpleScoreTable} preview={false} />
           <div>
             出典:
             <a href="https://majandofu.com/rule-score-pointstable">麻雀豆腐</a>
