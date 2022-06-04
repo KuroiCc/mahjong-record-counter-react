@@ -4,7 +4,7 @@ import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
 // local imports
 import logo from './logo.svg'
 import styles from './App.module.css'
-import { TestPage } from './pages'
+import { TestPage, CountPointsPage } from './pages'
 
 function App() {
   const templateHome = (
@@ -17,6 +17,9 @@ function App() {
       <Link className={styles['App-link']} to="/test">
         Test Page
       </Link>
+      <Link className={styles['App-link']} to="/countPoints">
+        Count Points Page
+      </Link>
     </header>
   )
   return (
@@ -24,6 +27,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={templateHome} />
+          <Route path="/countPoints" element={<CountPointsPage />} />
           <Route path="/test" element={<TestPage />} />
           <Route path="*" element={<h1>404 NOT FOUND</h1>} />
         </Routes>
