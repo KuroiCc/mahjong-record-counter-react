@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import { Radio, RadioChangeEvent, Button, Typography } from 'antd'
+import { Radio, RadioChangeEvent, Button, Typography, Image } from 'antd'
 import { RadioGroupOptionType, RadioGroupButtonStyle } from 'antd/lib/radio'
 import { SyncOutlined } from '@ant-design/icons'
 
 // local imports
 import styles from './CountPointsPage.module.css'
+import simpleScoreTable from '../../assets/pdf-simple-score-table.jpg'
 
 type CountPointsFormOptionField = 'type' | 'winType' | 'headType' | 'readyType'
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -16,33 +17,33 @@ type CountPointsFormStates = Record<
 
 const options: CountPointsFormOption = {
   type: {
-    label: '类型',
+    label: '特殊なタイプ',
     value: [
-      { label: '其他', value: '其他' },
-      { label: '七对', value: '七对' },
-      { label: '平胡', value: '平胡' }
+      { label: 'その他', value: '其他' },
+      { label: '七対子', value: '七对' },
+      { label: '平和', value: '平胡' }
     ]
   },
   winType: {
-    label: '胡牌类型',
+    label: '和了形',
     value: [
-      { label: '其他', value: '其他' },
-      { label: '自摸', value: '自摸' },
-      { label: '门清荣和', value: '门清荣和' }
+      { label: 'その他', value: '其他' },
+      { label: 'ツモ', value: '自摸' },
+      { label: '門前ロン', value: '门清荣和' }
     ]
   },
   headType: {
-    label: '雀头类型',
+    label: '雀頭の種類',
     value: [
-      { label: '其他', value: '其他' },
+      { label: 'その他', value: '其他' },
       { label: '役牌', value: '役牌' }
     ]
   },
   readyType: {
-    label: '听牌类型',
+    label: '待ちの形',
     value: [
-      { label: '两面/双碰', value: '两面/双碰' },
-      { label: '坎/边/单骑', value: '坎/边/单骑' }
+      { label: '両面/シャボ', value: '两面/双碰' },
+      { label: '坎/边/单骑', value: '辺張/嵌張/単騎' }
     ]
   }
 }
@@ -111,7 +112,6 @@ export const CountPointsPage: React.FC = () => {
             (elementsTypeValue as any).score * (elementsTypeValue as any).count
         }
       }
-      console.log('concealedTripletScore', concealedTripletScore)
 
       result = 20 + winTypeScore + headTypeScore + readyTypeScore + concealedTripletScore
       result = result === 20 ? 30 : result
@@ -138,153 +138,153 @@ export const CountPointsPage: React.FC = () => {
   }
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '100vh',
-        backgroundColor: '#fdfdfd'
-      }}
-    >
+    <div>
       <div
         style={{
-          width: '500px',
-          backgroundColor: 'white',
-          padding: '15px 30px',
-          margin: '0 auto',
-          borderRadius: '30px',
-          boxShadow: '0 0 1px rgba(0,0,0,0.1)'
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '100vh',
+          backgroundColor: '#fdfdfd'
         }}
       >
-        <Typography.Title
-          level={3}
-          style={{
-            marginBottom: '30px'
-          }}
-        >
-          符数计算
-        </Typography.Title>
-        {/* ****************** 渲染单选框 ****************** */}
-        {Object.keys(options).map((optionName) => {
-          return (
-            <div
-              key={optionName}
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                marginTop: '20px'
-              }}
-            >
-              <div>{options[optionName].label}:</div>
-              <Radio.Group
-                name={optionName}
-                options={options[optionName].value}
-                {...createRGProps(optionName)}
-              />
-            </div>
-          )
-        })}
-        {/* ****************** 刻子杠子表格 ****************** */}
-        <div style={{ marginTop: '20px', textAlign: 'left' }}>统计刻子的种类: </div>
-        <table className={styles['concealed-triplet-table']}>
-          <thead>
-            <tr>
-              <td></td>
-              <td>中张牌</td>
-              <td>幺九牌</td>
-            </tr>
-          </thead>
-          <tbody>
-            {zip([
-              ['明刻', '暗刻', '明杠', '暗杠'],
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              Object.keys(concealedTriplet.z).map((key) => ['z', key] as any),
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              Object.keys(concealedTriplet.y).map((key) => ['y', key] as any)
-            ]).map(([label, y, z]) => {
-              return (
-                <tr key={label}>
-                  <td>{label}</td>
-                  {[y, z].map(([tileType, elementsType]) => {
-                    return (
-                      <td key={`${tileType}-${elementsType}`}>
-                        <Button
-                          type="primary"
-                          size="large"
-                          onClick={() => {
-                            setConcealedTriplet({
-                              ...concealedTriplet,
-                              [tileType]: {
-                                ...concealedTriplet[tileType],
-                                [elementsType]: {
-                                  ...concealedTriplet[tileType][elementsType],
-                                  count: concealedTriplet[tileType][elementsType].count + 1
-                                }
-                              }
-                            })
-                          }}
-                        >
-                          {concealedTriplet[tileType][elementsType].score}符 x{' '}
-                          {concealedTriplet[tileType][elementsType].count}个
-                        </Button>
-                      </td>
-                    )
-                  })}
-                </tr>
-              )
-            })}
-          </tbody>
-        </table>
-        {/* 重置按钮 */}
         <div
           style={{
-            textAlign: 'right',
-            marginTop: '20px'
+            width: '500px',
+            backgroundColor: 'white',
+            padding: '15px 30px',
+            borderRadius: '30px',
+            boxShadow: '0 0 1px rgba(0,0,0,0.1)'
           }}
         >
-          <Button
-            icon={<SyncOutlined />}
-            type="primary"
-            shape="circle"
-            // size="large"
-            onClick={() => {
-              Object.keys(states).forEach((key) => {
-                states[key][1]('其他')
-              })
-              states.readyType[1]('两面/双碰')
-              setConcealedTriplet({
-                z: {
-                  mk: { count: 0, score: 2 },
-                  ak: { count: 0, score: 4 },
-                  mg: { count: 0, score: 8 },
-                  ag: { count: 0, score: 16 }
-                },
-                y: {
-                  mk: { count: 0, score: 4 },
-                  ak: { count: 0, score: 8 },
-                  mg: { count: 0, score: 16 },
-                  ag: { count: 0, score: 32 }
-                }
-              })
+          <Typography.Title
+            level={3}
+            style={{
+              marginBottom: '30px'
             }}
-          />{' '}
-          重置
-        </div>
-        {/* 结果区域 */}
-        <div
-          style={{
-            marginTop: '-20px',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'baseline'
-          }}
-        >
-          <Typography.Title>{Math.ceil((result as number) / 10) * 10}符</Typography.Title>
-          <span style={{ marginLeft: '5px', fontSize: 'larger' }}>({result})</span>
-        </div>
-        {/* debug */}
-        {/* <div>
+          >
+            符数计算
+          </Typography.Title>
+          {/* ****************** 渲染单选框 ****************** */}
+          {Object.keys(options).map((optionName) => {
+            return (
+              <div
+                key={optionName}
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  marginTop: '20px'
+                }}
+              >
+                <div>{options[optionName].label}:</div>
+                <Radio.Group
+                  name={optionName}
+                  options={options[optionName].value}
+                  {...createRGProps(optionName)}
+                />
+              </div>
+            )
+          })}
+          {/* ****************** 刻子杠子表格 ****************** */}
+          <div style={{ marginTop: '20px', textAlign: 'left' }}>统计刻子的种类: </div>
+          <table className={styles['concealed-triplet-table']}>
+            <thead>
+              <tr>
+                <td></td>
+                <td>中張牌</td>
+                <td>么九牌</td>
+              </tr>
+            </thead>
+            <tbody>
+              {zip([
+                ['明刻', '暗刻', '明槓', '暗槓'],
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                Object.keys(concealedTriplet.z).map((key) => ['z', key] as any),
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                Object.keys(concealedTriplet.y).map((key) => ['y', key] as any)
+              ]).map(([label, y, z]) => {
+                return (
+                  <tr key={label}>
+                    <td>{label}</td>
+                    {[y, z].map(([tileType, elementsType]) => {
+                      return (
+                        <td key={`${tileType}-${elementsType}`}>
+                          <Button
+                            type="primary"
+                            size="large"
+                            onClick={() => {
+                              setConcealedTriplet({
+                                ...concealedTriplet,
+                                [tileType]: {
+                                  ...concealedTriplet[tileType],
+                                  [elementsType]: {
+                                    ...concealedTriplet[tileType][elementsType],
+                                    count: concealedTriplet[tileType][elementsType].count + 1
+                                  }
+                                }
+                              })
+                            }}
+                          >
+                            {concealedTriplet[tileType][elementsType].score}符 x{' '}
+                            {concealedTriplet[tileType][elementsType].count}
+                          </Button>
+                        </td>
+                      )
+                    })}
+                  </tr>
+                )
+              })}
+            </tbody>
+          </table>
+          {/* 重置按钮 */}
+          <div
+            style={{
+              textAlign: 'right',
+              marginTop: '20px'
+            }}
+          >
+            <Button
+              icon={<SyncOutlined />}
+              type="primary"
+              shape="circle"
+              // size="large"
+              onClick={() => {
+                Object.keys(states).forEach((key) => {
+                  states[key][1]('其他')
+                })
+                states.readyType[1]('两面/双碰')
+                setConcealedTriplet({
+                  z: {
+                    mk: { count: 0, score: 2 },
+                    ak: { count: 0, score: 4 },
+                    mg: { count: 0, score: 8 },
+                    ag: { count: 0, score: 16 }
+                  },
+                  y: {
+                    mk: { count: 0, score: 4 },
+                    ak: { count: 0, score: 8 },
+                    mg: { count: 0, score: 16 },
+                    ag: { count: 0, score: 32 }
+                  }
+                })
+              }}
+            />{' '}
+            リセット
+          </div>
+          {/* 结果区域 */}
+          <div
+            style={{
+              marginTop: '-20px',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'baseline'
+            }}
+          >
+            <Typography.Title>{Math.ceil((result as number) / 10) * 10}符</Typography.Title>
+            <span style={{ marginLeft: '5px', fontSize: 'larger' }}>({result})</span>
+          </div>
+          {/* debug */}
+          {/* <div>
       {Object.keys(states).map((state) => {
         return (
           <div key={state}>
@@ -295,6 +295,14 @@ export const CountPointsPage: React.FC = () => {
     </div>
 
     <div>{JSON.stringify(concealedTriplet)}</div> */}
+        </div>
+        <div>
+          <Image width={500} src={simpleScoreTable} />
+          <div>
+            出典:
+            <a href="https://majandofu.com/rule-score-pointstable">麻雀豆腐</a>
+          </div>
+        </div>
       </div>
     </div>
   )
