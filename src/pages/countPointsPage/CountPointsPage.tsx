@@ -15,39 +15,6 @@ type CountPointsFormStates = Record<
   [string, React.Dispatch<string>]
 > & { [key: string]: [string, React.Dispatch<string>] }
 
-const options: CountPointsFormOption = {
-  type: {
-    label: '特殊なタイプ',
-    value: [
-      { label: 'その他', value: '其他' },
-      { label: '七対子', value: '七对' },
-      { label: '平和', value: '平胡' }
-    ]
-  },
-  winType: {
-    label: '和了形',
-    value: [
-      { label: 'その他', value: '其他' },
-      { label: 'ツモ', value: '自摸' },
-      { label: '門前ロン', value: '门清荣和' }
-    ]
-  },
-  headType: {
-    label: '雀頭の種類',
-    value: [
-      { label: 'その他', value: '其他' },
-      { label: '役牌', value: '役牌' }
-    ]
-  },
-  readyType: {
-    label: '待ちの形',
-    value: [
-      { label: '両面/シャボ', value: '两面/双碰' },
-      { label: '坎/边/单骑', value: '辺張/嵌張/単騎' }
-    ]
-  }
-}
-
 // eslint-disable-next-line comma-spacing
 const zip = <T,>(rows: Array<Array<T>>) => rows[0].map((_, c) => rows.map((row) => row[c]))
 
@@ -118,6 +85,40 @@ export const CountPointsPage: React.FC = () => {
     }
     setResult(result)
   }, [concealedTriplet, ...Object.keys(states).map((key) => states[key][0])])
+
+  // ****************** 单选框选项
+  const options: CountPointsFormOption = {
+    type: {
+      label: '特殊なタイプ',
+      value: [
+        { label: 'その他', value: '其他' },
+        { label: '七対子', value: '七对' },
+        { label: '平和', value: '平胡' }
+      ]
+    },
+    winType: {
+      label: '和了形',
+      value: [
+        { label: 'その他', value: '其他', disabled: states.type[0] !== '其他' },
+        { label: 'ツモ', value: '自摸', disabled: states.type[0] === '七对' },
+        { label: '門前ロン', value: '门清荣和', disabled: states.type[0] === '七对' }
+      ]
+    },
+    headType: {
+      label: '雀頭の種類',
+      value: [
+        { label: 'その他', value: '其他', disabled: states.type[0] !== '其他' },
+        { label: '役牌', value: '役牌', disabled: states.type[0] !== '其他' }
+      ]
+    },
+    readyType: {
+      label: '待ちの形',
+      value: [
+        { label: '両面/シャボ', value: '两面/双碰', disabled: states.type[0] !== '其他' },
+        { label: '坎/边/单骑', value: '辺張/嵌張/単騎', disabled: states.type[0] !== '其他' }
+      ]
+    }
+  }
 
   // ****************** 单选框Props creator, 主要定义onChange事件
   const RGProps: { optionType: RadioGroupOptionType; buttonStyle: RadioGroupButtonStyle } = {
@@ -214,6 +215,7 @@ export const CountPointsPage: React.FC = () => {
                           <Button
                             type="primary"
                             size="large"
+                            disabled={states.type[0] !== '其他'}
                             onClick={() => {
                               setConcealedTriplet({
                                 ...concealedTriplet,
