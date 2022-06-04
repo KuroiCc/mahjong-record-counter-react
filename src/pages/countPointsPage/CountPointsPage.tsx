@@ -144,7 +144,9 @@ export const CountPointsPage: React.FC = () => {
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
+          flexFlow: 'wrap',
           height: '100vh',
+          width: '100vw',
           backgroundColor: '#fdfdfd'
         }}
       >
