@@ -115,7 +115,7 @@ export const CountPointsPage: React.FC = () => {
       label: '待ちの形',
       value: [
         { label: '両面/シャボ', value: '两面/双碰', disabled: states.type[0] !== '其他' },
-        { label: '坎/边/单骑', value: '辺張/嵌張/単騎', disabled: states.type[0] !== '其他' }
+        { label: '辺張/嵌張/単騎', value: '坎/边/单骑', disabled: states.type[0] !== '其他' }
       ]
     }
   }
