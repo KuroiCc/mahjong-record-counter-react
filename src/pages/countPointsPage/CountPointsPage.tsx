@@ -26,8 +26,8 @@ export const CountPointsPage: React.FC = () => {
     headType: useState('其他'),
     readyType: useState('两面/双碰')
   }
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [concealedTriplet, setConcealedTriplet] = useState<{ [key: string]: any }>({
+
+  const initialConcealedTriplet = {
     // 中张牌
     z: {
       // 明刻
@@ -46,7 +46,13 @@ export const CountPointsPage: React.FC = () => {
       mg: { count: 0, score: 16 },
       ag: { count: 0, score: 32 }
     }
-  })
+  }
+
+  const [concealedTriplet, setConcealedTriplet] = useState<
+    typeof initialConcealedTriplet & {
+      [key: string]: { [key: string]: typeof initialConcealedTriplet.z.mk }
+    }
+  >(initialConcealedTriplet)
 
   const [result, setResult] = useState<number | string>(30)
 
@@ -203,8 +209,7 @@ export const CountPointsPage: React.FC = () => {
                 ['明刻', '暗刻', '明槓', '暗槓'],
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 Object.keys(concealedTriplet.z).map((key) => ['z', key] as any),
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                Object.keys(concealedTriplet.y).map((key) => ['y', key] as any)
+                Object.keys(concealedTriplet.y).map((key) => ['y', key])
               ]).map(([label, y, z]) => {
                 return (
                   <tr key={label}>
@@ -217,16 +222,8 @@ export const CountPointsPage: React.FC = () => {
                             size="large"
                             disabled={states.type[0] !== '其他'}
                             onClick={() => {
-                              setConcealedTriplet({
-                                ...concealedTriplet,
-                                [tileType]: {
-                                  ...concealedTriplet[tileType],
-                                  [elementsType]: {
-                                    ...concealedTriplet[tileType][elementsType],
-                                    count: concealedTriplet[tileType][elementsType].count + 1
-                                  }
-                                }
-                              })
+                              concealedTriplet[tileType][elementsType].count += 1
+                              setConcealedTriplet({ ...concealedTriplet })
                             }}
                           >
                             {concealedTriplet[tileType][elementsType].score}符 x{' '}
@@ -253,24 +250,9 @@ export const CountPointsPage: React.FC = () => {
               shape="circle"
               // size="large"
               onClick={() => {
-                Object.keys(states).forEach((key) => {
-                  states[key][1]('其他')
-                })
+                Object.keys(states).forEach((key) => states[key][1]('其他'))
                 states.readyType[1]('两面/双碰')
-                setConcealedTriplet({
-                  z: {
-                    mk: { count: 0, score: 2 },
-                    ak: { count: 0, score: 4 },
-                    mg: { count: 0, score: 8 },
-                    ag: { count: 0, score: 16 }
-                  },
-                  y: {
-                    mk: { count: 0, score: 4 },
-                    ak: { count: 0, score: 8 },
-                    mg: { count: 0, score: 16 },
-                    ag: { count: 0, score: 32 }
-                  }
-                })
+                setConcealedTriplet(initialConcealedTriplet)
               }}
             />{' '}
             リセット
